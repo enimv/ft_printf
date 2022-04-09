@@ -28,8 +28,13 @@ int checkformat(char    c,va_list   arg)
         return (ft_putchar(va_arg(arg,int)));
     if  (c == 's')
         return (ft_putstr(va_arg(arg,char *)));
-    if (c == 'd' || c == 'i')
-        return (ft_putnbr(va_arg(arg,long)));
+   if (c == 'd' || c == 'i')
+       return (ft_putnbr(va_arg(arg,long)));
+    if (c == 'u')
+        return (ft_uint(va_arg(arg,unsigned int)));
+    if (c == '%')
+        return (ft_puchar('%'));
+    
     return (0);
 }
 
