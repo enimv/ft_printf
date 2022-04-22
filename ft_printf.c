@@ -1,72 +1,57 @@
-#include <stdarg.h>
-#include <unistd.h>
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aoueldma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/22 02:53:19 by aoueldma          #+#    #+#             */
+/*   Updated: 2022/04/22 03:00:10 by aoueldma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int ft_putchar(char c)
+#include "ft_printf.h"
+
+static int	checkformat(char c, va_list arg)
 {
-    write (1, &c,1);
-return (1);
+	if (c == 'c')
+		return (ft_putchar(va_arg(arg, int)));
+	else if (c == 's')
+		return (ft_putstr(va_arg(arg, char *)));
+	else if (c == 'd' || c == 'i')
+		return (ft_putnbr(va_arg(arg, int)));
+	else if (c == 'u')
+		return (ft_uint(va_arg(arg, unsigned int)));
+	else if (c == 'x')
+		return (ft_lowhexa(va_arg(arg, unsigned long)));
+	else if (c == 'p')
+		return (ft_p(va_arg(arg, unsigned long)));
+	else if (c == 'X')
+		return (ft_uphexa(va_arg(arg, unsigned int)));
+	else if (c == '%')
+		return (ft_putchar('%'));
+	return (0);
 }
 
-int ft_putstr(char  *str)
+int	ft_printf(const char *str, ...)
 {
-    int i;
+	int		i;
+	int		ret;
+	va_list	arg;
 
-    i = 0;
-
-    while (str[i])
-    {
-        ft_putchar(str[i]);
-        i++;
-    }
-return (i);
-}
-
-int checkformat(char    c,va_list   arg)
-{
-    if (c == 'c')
-        return (ft_putchar(va_arg(arg,int)));
-    if  (c == 's')
-        return (ft_putstr(va_arg(arg,char *)));
-   if (c == 'd' || c == 'i')
-       return (ft_putnbr(va_arg(arg,long)));
-    if (c == 'u')
-        return (ft_uint(va_arg(arg,unsigned int)));
-    if (c == '%')
-        return (ft_puchar('%'));
-    
-    return (0);
-}
-
-int ft_printf(const char *str, ...)
-{
-    int i;
-    int ret;
-
-    i = 0;
-    ret = 0;
-    va_list arg;
-
-    va_start(arg, str);
-    while (str[i])
-    {
-        if (str[i] == '%')
-        {
-            ret = ret + checkformat(str[i + 1], arg);
-            i++;
-        }
-        else
-            ret += ft_putchar(str[i]);
-        i++;
-    }
-return(ret);
-}
-
-int main()
-{
-    ft_printf("hello %s \n","enima");
-
-    printf("hello %s \n","enima");
-
-    return(0);
+	i = 0;
+	ret = 0;
+	va_start(arg, str);
+	while (str[i])
+	{
+		if (str[i] == '%')
+		{
+			ret = ret + checkformat(str[i + 1], arg);
+			i++;
+		}
+		else
+			ret += ft_putchar(str[i]);
+		i++;
+	}
+	return (ret);
 }

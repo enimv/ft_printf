@@ -1,38 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lowhexa.c                                       :+:      :+:    :+:   */
+/*   ft_p.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aoueldma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/22 02:00:50 by aoueldma          #+#    #+#             */
-/*   Updated: 2022/04/22 02:35:06 by aoueldma         ###   ########.fr       */
+/*   Created: 2022/04/22 02:42:16 by aoueldma          #+#    #+#             */
+/*   Updated: 2022/04/22 03:53:22 by aoueldma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	ft_alpha(unsigned int nbr)
-{
-	char	c;
-
-	c = '\0';
-	if (nbr == 10)
-		c = 'a';
-	else if (nbr == 11)
-		c = 'b';
-	else if (nbr == 12)
-		c = 'c';
-	else if (nbr == 13)
-		c = 'd';
-	else if (nbr == 14)
-		c = 'e';
-	else if (nbr == 15)
-		c = 'f';
-	return (c);
-}
-
-int	ft_countnbr(unsigned int nbr)
+static int	ft_pcountnbr(unsigned long nbr)
 {
 	int	i;
 
@@ -47,7 +27,7 @@ int	ft_countnbr(unsigned int nbr)
 	return (i);
 }
 
-static int	ft_roll(unsigned int nbr, char *str)
+static int	ft_proll(unsigned long nbr, char *str)
 {
 	int	i;
 
@@ -58,7 +38,7 @@ static int	ft_roll(unsigned int nbr, char *str)
 		{
 			str[i++] = ft_alpha(nbr % 16);
 		}
-		if (nbr % 16 <= 9)
+		else if (nbr % 16 <= 9)
 		{
 			str[i++] = (nbr % 16) + 48;
 		}
@@ -70,7 +50,7 @@ static int	ft_roll(unsigned int nbr, char *str)
 	return (i);
 }
 
-int	ft_lowhexa(unsigned int nbr)
+static int	ft_plowhexa(unsigned long nbr)
 {
 	char	*str;
 
@@ -79,8 +59,18 @@ int	ft_lowhexa(unsigned int nbr)
 		ft_putnbr(0);
 		return (1);
 	}
-	str = malloc(sizeof(char) * (ft_countnbr(nbr) + 1));
+	str = malloc(sizeof(*str) * (ft_pcountnbr(nbr) + 1));
 	if (!str)
 		return (0);
-	return (ft_roll(nbr, str));
+	return (ft_proll(nbr, str));
+}
+
+int	ft_p(unsigned long nbr)
+{
+	int	i;
+
+	i = 0;
+	i += ft_putstr("0x");
+	i += ft_plowhexa(nbr);
+	return (i);
 }

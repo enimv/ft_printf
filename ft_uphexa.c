@@ -1,53 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lowhexa.c                                       :+:      :+:    :+:   */
+/*   ft_uphexa.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aoueldma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/22 02:00:50 by aoueldma          #+#    #+#             */
-/*   Updated: 2022/04/22 02:35:06 by aoueldma         ###   ########.fr       */
+/*   Created: 2022/04/22 03:42:04 by aoueldma          #+#    #+#             */
+/*   Updated: 2022/04/22 03:55:09 by aoueldma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	ft_alpha(unsigned int nbr)
-{
-	char	c;
-
-	c = '\0';
-	if (nbr == 10)
-		c = 'a';
-	else if (nbr == 11)
-		c = 'b';
-	else if (nbr == 12)
-		c = 'c';
-	else if (nbr == 13)
-		c = 'd';
-	else if (nbr == 14)
-		c = 'e';
-	else if (nbr == 15)
-		c = 'f';
-	return (c);
-}
-
-int	ft_countnbr(unsigned int nbr)
-{
-	int	i;
-
-	i = 0;
-	if (nbr < 0)
-		nbr *= -1;
-	while (nbr != 0)
-	{
-		nbr /= 10;
-		i++;
-	}
-	return (i);
-}
-
-static int	ft_roll(unsigned int nbr, char *str)
+static int	ft_uproll(unsigned int nbr, char *str)
 {
 	int	i;
 
@@ -56,9 +21,9 @@ static int	ft_roll(unsigned int nbr, char *str)
 	{
 		if (nbr % 16 > 9)
 		{
-			str[i++] = ft_alpha(nbr % 16);
+			str[i++] = ft_alpha(nbr % 16) - 32;
 		}
-		if (nbr % 16 <= 9)
+		else if (nbr % 16 <= 9)
 		{
 			str[i++] = (nbr % 16) + 48;
 		}
@@ -70,10 +35,14 @@ static int	ft_roll(unsigned int nbr, char *str)
 	return (i);
 }
 
-int	ft_lowhexa(unsigned int nbr)
+int	ft_uphexa(unsigned int nbr)
 {
 	char	*str;
+	int		i;
+	int		r;
 
+	i = 0;
+	r = 0;
 	if (nbr == 0)
 	{
 		ft_putnbr(0);
@@ -82,5 +51,5 @@ int	ft_lowhexa(unsigned int nbr)
 	str = malloc(sizeof(char) * (ft_countnbr(nbr) + 1));
 	if (!str)
 		return (0);
-	return (ft_roll(nbr, str));
-}
+	return (ft_uproll(nbr, str));
+}	
